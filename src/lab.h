@@ -1,14 +1,27 @@
 #ifndef LAB_H
 #define LAB_H
 
-/** * @brief Returns a greeting message.
+#include "protocol.h"
+#include "session.h"
+#include "socket_transport.h"
+
+// #region Functions
+
+/* (const char *) -> char *
  *
- * This function returns a string that contains a greeting message.
- * The string is allocated with malloc and should be freed by the caller.
- * @param name The name to include in the greeting.
- * @return A greeting string.
+ * Builds the starter greeting retained for the existing template test.
+ *
+ * Parameters:
+ * const char *name : Name to include in the greeting.
+ *
+ * Returns: An allocated greeting, or NULL for null input, formatting failure,
+ * or allocation failure.
+ *
+ * NOTE: The caller must free the returned string. This helper is not used
+ * by the SMTP client and can be removed when the template test is replaced.
  */
-char* get_greeting(const char* restrict name);
+char *get_greeting(const char *restrict name);
 
+// #endregion
 
-#endif // LAB_H
+#endif

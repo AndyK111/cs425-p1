@@ -1,34 +1,26 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "harness/unity.h"
-#include "../src/lab.h"
+#include "test-support.h"
 
+// #region Functions
 
-void setUp(void) {
-  printf("Setting up tests...\n");
+void setUp(void)
+{
+    reset_test_support();
 }
 
-void tearDown(void) {
-  printf("Tearing down tests...\n");
+void tearDown(void)
+{
+    size_t leaked_allocations = finish_test_support();
+    TEST_ASSERT_EQUAL_UINT64_MESSAGE(0, leaked_allocations, "Application allocations leaked during this test.");
 }
 
-void test_get_greeting(void) {
-  char *greeting = get_greeting("Alice");
-  TEST_ASSERT_NOT_NULL(greeting);
-  TEST_ASSERT_EQUAL_STRING("Hello, Alice!", greeting);
-  free(greeting); // Free the allocated memory for the greeting
-
-  greeting = get_greeting(NULL);
-  TEST_ASSERT_NULL(greeting);
-
-  greeting = get_greeting("");
-  TEST_ASSERT_NOT_NULL(greeting);
-  TEST_ASSERT_EQUAL_STRING("Hello, !", greeting);
-  free(greeting);
+int main(void)
+{
+    UNITY_BEGIN();
+    run_protocol_tests();
+    run_session_tests();
+    run_socket_tests();
+    return UNITY_END();
 }
 
-int main(void) {
-  UNITY_BEGIN();
-  RUN_TEST(test_get_greeting);
-  return UNITY_END();
-}
+// #endregion
